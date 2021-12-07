@@ -1,0 +1,37 @@
+<script src="js/crypto-js.min.js"></script>
+<script src="js/authhelpers.min.js"></script>
+<script>
+  let config = null;
+  let bGetCode = false;
+  let serverSSOData = null;
+  let auth = EdxAuth.getAuthData();
+  if (!!auth && !!auth.config) {
+    config = auth.config;
+    let code = EdxAuth.findCode(location.href);
+    if (!!code && !!config) {
+      EdxAuth.getAccessToken(code).then(function(data) {
+        if (!!data) {
+          window.parent.postMessage(JSON.stringify({token:data}), location.protocol + "//" + location.host);
+        } else {
+          window.parent.postMessage(JSON.stringify({error:'no token'}), location.protocol + "//" + location.host);
+        }
+      }, function(error) {
+        console.error(error);
+        EdxAuth.getCode(auth, config.authorization_endpoint);
+      });
+    } else {
+      if (!!config) {
+        EdxAuth.getCode(auth, config.authorization_endpoint);
+      } else {
+        EdxAuth.getConfig(serverSSOData.authority).then(function(theConfig) {
+          config = theConfig;
+          EdxAuth.getCode(serverSSOData, config.authorization_endpoint);
+        }, function(err) {
+          window.parent.postMessage(JSON.stringify({error:'no config'}), location.protocol + "//" + location.host);
+        });
+      }
+    }
+  } else {
+    window.parent.postMessage(JSON.stringify({error:'no config'}), location.protocol + "//" + location.host);
+  }
+</script>

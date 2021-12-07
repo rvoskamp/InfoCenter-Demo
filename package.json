@@ -1,0 +1,21 @@
+{
+  "name": "ic-restapi",
+  "version": "1.0.0",
+  "description": "Javascript library to create and manage connections to the eDOCS InfoCenter Rest API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lite": "lite-server",
+    "start": "npm run lite"
+  },
+  "keywords": [
+    "eDOCS",
+    "Rest",
+    "API"
+  ],
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  },
+  "author": "rpasdern@opentext.com",
+  "license": "MIT"
+}

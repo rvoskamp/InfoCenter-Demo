@@ -1,0 +1,58 @@
+<script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.debug.js"></script>
+<script src="js/crypto-js.min.js"></script>
+<script src="js/authhelpers.min.js"></script>
+<script>
+  Office.onReady().then(function(info) {
+    setTimeout(function() {
+      const loc = location.href;
+      let error = EdxAuth.findError(loc);
+      if (!!error) {
+        Office.context.ui.messageParent(JSON.stringify({error:error}));
+      } else {
+        let config = null;
+        let serverSSOData = null;
+        let auth = EdxAuth.getAuthData();
+        if (!!auth && !!auth.config)
+          config = auth.config;
+        let code = EdxAuth.findCode(loc);
+        let ssoArg = EdxUrlParse.getQueryFromURL(loc,'state');
+        if (!!ssoArg) {
+          serverSSOData = JSON.parse(decodeURIComponent(ssoArg));
+        }
+        const postCodeConfig = function(okToGetCode) {
+          EdxAuth.getAccessToken(code, config).then(function(data) {
+            if (!!data) {
+              Office.context.ui.messageParent(JSON.stringify({token:data}));
+            } else {
+              if (okToGetCode)
+                EdxAuth.getCode(serverSSOData, config.authorization_endpoint);
+              else
+                Office.context.ui.messageParent(JSON.stringify({error:'no token'}));
+            }
+          }, function(error) {
+            if (okToGetCode)
+              EdxAuth.getCode(serverSSOData, config.authorization_endpoint);
+            else
+              Office.context.ui.messageParent(JSON.stringify({error:error}));
+          });
+        };
+        if (!!code && !!config) {
+          postCodeConfig(false);
+        } else if (!!serverSSOData) {
+          if (!!config) {
+            EdxAuth.getCode(serverSSOData, config.authorization_endpoint);
+          } else {
+            EdxAuth.getConfig(serverSSOData.authority).then(function(theConfig) {
+              config = theConfig;
+              postCodeConfig(true);
+            }, function(err) {
+              Office.context.ui.messageParent(JSON.stringify({error:err}));
+            });
+          }
+        } else {
+          Office.context.ui.messageParent(JSON.stringify({error:'no code and no sso data'}));
+        }
+      }
+    }, 500);
+  });
+</script>

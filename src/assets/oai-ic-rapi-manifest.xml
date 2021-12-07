@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OfficeApp
+          xmlns="http://schemas.microsoft.com/office/appforoffice/1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:bt="http://schemas.microsoft.com/office/officeappbasictypes/1.0"
+          xmlns:ov="http://schemas.microsoft.com/office/taskpaneappversionoverrides"
+          xsi:type="TaskPaneApp">
+
+  <!-- Begin Basic Settings: Add-in metadata, used for all versions of Office unless override provided. -->
+
+	<!-- IMPORTANT! CHANGE ALL: https://ratznest.firstclass.com:8443 to your server -->
+
+  <!-- IMPORTANT! Id must be unique for your add-in, if you reuse this manifest ensure that you change this id to a new GUID. -->
+  <Id>58b56f3b-01b4-4238-8d3e-560a13669896</Id>
+  <!--Version. Updates from the store only get triggered if there is a version change. -->
+  <Version>1.0.0.0</Version>
+  <ProviderName>OpenText</ProviderName>
+  <DefaultLocale>en-US</DefaultLocale>
+  <!-- The display name of your add-in. Used on the store and various places of the Office UI such as the add-ins dialog. -->
+  <DisplayName DefaultValue="IC-RAPI" />
+  <Description DefaultValue="Test OpenText eDOCS InfoCenter Rest API"/>
+
+  <!-- Icon for your add-in. Used on installation screens and the add-ins dialog. -->
+  <!-- according to https://dev.office.com/reference/add-ins/manifest/iconurl should be using 64 pixel one for mail -->
+  <IconUrl DefaultValue="https://ratznest.firstclass.com:8443/assets/images/edocs-app-64.png"/>
+  <HighResolutionIconUrl DefaultValue="https://ratznest.firstclass.com:8443/assets/images/edocs-app-64.png"/>
+
+  <!--If you plan to submit this add-in to the Office Store, uncomment the SupportUrl element below-->
+  <SupportUrl DefaultValue="http://www.opentext.com" />
+
+  <!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
+  <AppDomains>
+    <AppDomain>https://dev-sso.core.opentext.com</AppDomain>
+    <AppDomain>https://adfs.firstclass.com</AppDomain>
+    <AppDomain>https://login.microsoftonline.com</AppDomain>
+  </AppDomains>
+  <!--End Basic Settings. -->
+
+  <Hosts>
+    <Host Name="Document" />
+  	<Host Name="Workbook" />
+  	<Host Name="Presentation" />
+  </Hosts>
+  <DefaultSettings>
+    <SourceLocation DefaultValue="https://ratznest.firstclass.com:8443/index.html"/>
+  </DefaultSettings>
+
+  <Permissions>ReadWriteDocument</Permissions>
+
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/taskpaneappversionoverrides" xsi:type="VersionOverridesV1_0">   
+    <Hosts>
+      <Host xsi:type="Document">
+	  
+	   <DesktopFormFactor>
+          <GetStarted>
+            <Title resid="paneSuperTipTitle"/>
+            <Description resid="paneSuperTipDescription"/>
+            <LearnMoreUrl resid="learnMoreUrl"/>
+          </GetStarted>
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <!-- Use the default tab of the ExtensionPoint or create your own with <CustomTab id="myTab"> -->
+            <OfficeTab id="TabHome">
+              <!-- Up to 6 Groups added per Tab -->
+              <Group id="docDemoGroup">
+                <Label resid="groupLabel" />
+                <Icon>
+                  <bt:Image size="16" resid="icon16" />
+                  <bt:Image size="32" resid="icon32" />
+                  <bt:Image size="80" resid="icon80" />
+                </Icon>
+                <!-- Launch the add-in : task pane button -->
+                <Control xsi:type="Button" id="docOpenPaneButton">
+                  <Label resid="paneButtonLabel" />
+                  <Supertip>
+                    <Title resid="paneSuperTipTitle" />
+                    <Description resid="paneSuperTipDescription" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16" />
+                    <bt:Image size="32" resid="icon32" />
+                    <bt:Image size="80" resid="icon80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
+                    <SourceLocation resid="docTaskPaneUrl" />
+                  </Action>
+                </Control>
+                <!-- Go to http://aka.ms/ButtonCommands to learn how to add more Controls: ExecuteFunction and Menu -->
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+	  <Host xsi:type="Workbook">
+        <DesktopFormFactor>
+          <GetStarted>
+            <Title resid="paneSuperTipTitle"/>
+            <Description resid="paneSuperTipDescription"/>
+            <LearnMoreUrl resid="learnMoreUrl"/>
+          </GetStarted>
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <!-- Use the default tab of the ExtensionPoint or create your own with <CustomTab id="myTab"> -->
+            <OfficeTab id="TabHome">
+              <!-- Up to 6 Groups added per Tab -->
+              <Group id="docDemoGroup">
+                <Label resid="groupLabel" />
+                <Icon>
+                  <bt:Image size="16" resid="icon16" />
+                  <bt:Image size="32" resid="icon32" />
+                  <bt:Image size="80" resid="icon80" />
+                </Icon>
+                <!-- Launch the add-in : task pane button -->
+                <Control xsi:type="Button" id="docOpenPaneButton">
+                  <Label resid="paneButtonLabel" />
+                  <Supertip>
+                    <Title resid="paneSuperTipTitle" />
+                    <Description resid="paneSuperTipDescription" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16" />
+                    <bt:Image size="32" resid="icon32" />
+                    <bt:Image size="80" resid="icon80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
+                    <SourceLocation resid="docTaskPaneUrl" />
+                  </Action>
+                </Control>
+                <!-- Go to http://aka.ms/ButtonCommands to learn how to add more Controls: ExecuteFunction and Menu -->
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+	  <Host xsi:type="Presentation">
+        <DesktopFormFactor>
+          <GetStarted>
+            <Title resid="paneSuperTipTitle"/>
+            <Description resid="paneSuperTipDescription"/>
+            <LearnMoreUrl resid="learnMoreUrl"/>
+          </GetStarted>
+          <ExtensionPoint xsi:type="PrimaryCommandSurface">
+            <!-- Use the default tab of the ExtensionPoint or create your own with <CustomTab id="myTab"> -->
+            <OfficeTab id="TabHome">
+              <!-- Up to 6 Groups added per Tab -->
+              <Group id="docDemoGroup">
+                <Label resid="groupLabel" />
+                <Icon>
+                  <bt:Image size="16" resid="icon16" />
+                  <bt:Image size="32" resid="icon32" />
+                  <bt:Image size="80" resid="icon80" />
+                </Icon>
+                <!-- Launch the add-in : task pane button -->
+                <Control xsi:type="Button" id="docOpenPaneButton">
+                  <Label resid="paneButtonLabel" />
+                  <Supertip>
+                    <Title resid="paneSuperTipTitle" />
+                    <Description resid="paneSuperTipDescription" />
+                  </Supertip>
+                  <Icon>
+                    <bt:Image size="16" resid="icon16" />
+                    <bt:Image size="32" resid="icon32" />
+                    <bt:Image size="80" resid="icon80" />
+                  </Icon>
+                  <Action xsi:type="ShowTaskpane">
+                    <TaskpaneId>Office.AutoShowTaskpaneWithDocument</TaskpaneId>
+                    <SourceLocation resid="docTaskPaneUrl" />
+                  </Action>
+                </Control>
+                <!-- Go to http://aka.ms/ButtonCommands to learn how to add more Controls: ExecuteFunction and Menu -->
+              </Group>
+            </OfficeTab>
+          </ExtensionPoint>
+        </DesktopFormFactor>
+      </Host>
+	</Hosts>
+
+    <Resources>
+      <bt:Images>
+        <bt:Image id="icon16" DefaultValue="https://ratznest.firstclass.com:8443/assets/images/edocs-app-16.png"/>
+        <bt:Image id="icon32" DefaultValue="https://ratznest.firstclass.com:8443/assets/images/edocs-app-32.png"/>
+        <bt:Image id="icon80" DefaultValue="https://ratznest.firstclass.com:8443/assets/images/edocs-app-80.png"/>
+      </bt:Images>
+      <bt:Urls>
+        <bt:Url id="docTaskPaneUrl" DefaultValue="https://ratznest.firstclass.com:8443/index.html"/>
+        <bt:Url id="learnMoreUrl" DefaultValue="http://www.opentext.com"/>
+      </bt:Urls>
+      <bt:ShortStrings>
+        <bt:String id="groupLabel" DefaultValue="IC-RAPI"/>
+        <bt:String id="customTabLabel"  DefaultValue="OpenText eDOCS IC-RAPI"/>
+        <bt:String id="paneButtonLabel" DefaultValue="OpenText eDOCS IC-RAPI"/>
+        <bt:String id="paneSuperTipTitle" DefaultValue="OpenText eDOCS IC-RAPI"/>
+      </bt:ShortStrings>
+      <bt:LongStrings>
+        <bt:String id="paneReadSuperTipDescription" DefaultValue="Opens IC-RAPI Test"/>
+        <bt:String id="paneSuperTipDescription" DefaultValue="Opens IC-RAPI Test"/>
+      </bt:LongStrings>
+    </Resources>
+  </VersionOverrides>
+</OfficeApp>

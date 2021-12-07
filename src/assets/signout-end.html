@@ -1,0 +1,24 @@
+<script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.debug.js"></script>
+<script src="js/oidc-client.min.js"></script>
+<script>
+  let timer = window.setTimeout(function() {
+    doWeb();
+  }, 1000);
+  const doWeb = function() {
+    window.opener.postMessage({success:true});
+  };
+  if (window.hasOwnProperty('Office')) {
+    Office.onReady().then(function(info) {
+      if (!!info && !!info.platform) {
+        window.clearTimeout(timer);
+        Office.context.ui.messageParent(JSON.stringify({success:true}));
+      } else {
+        setTimeout(function() {
+          doWeb();
+        }, 100);
+      }
+    });
+  } else {
+    doWeb();
+  }
+</script>

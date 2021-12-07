@@ -1,0 +1,41 @@
+<script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.debug.js"></script>
+<script src="js/authhelpers.min.js"></script>
+<script>
+  const start = function(bIsOffice) {
+    let url = location.origin;
+      let pathParts = location.pathname.split('/');
+      pathParts.splice(pathParts.length-1, 1);
+      url  += pathParts.join('/') + '/signout-end.html';
+      let redirect_uri = encodeURIComponent(url);
+      let config = null;
+      let auth = EdxAuth.getAuthData();
+      if (!!auth && !!auth.config && !!auth.config.end_session_endpoint && !!auth.client_id) {
+        EdxAuth.logoff(auth.client_id, auth.config.end_session_endpoint, redirect_uri);
+      } else if (bIsOffice) {
+        Office.context.ui.messageParent(JSON.stringify({error:'missing config'}));
+      } else {
+        window.parent.postMessage(JSON.stringify({error:'missing config'}));
+      }
+  };
+  Office.onReady().then(function(info) {
+    setTimeout(function() {
+    }, 500);
+  });
+  let timer = window.setTimeout(function() {
+    start(false);
+  }, 1000);
+  if (window.hasOwnProperty('Office')) {
+    Office.onReady().then(function(info) {
+      if (!!info && !!info.platform) {
+        window.clearTimeout(timer);
+        start(true);
+      } else {
+        setTimeout(function() {
+          start(false);
+        }, 100);
+      }
+    });
+  } else {
+    start(false);
+  }
+</script>
