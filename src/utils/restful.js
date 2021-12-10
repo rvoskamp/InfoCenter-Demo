@@ -198,12 +198,13 @@ export class RestAPI {
     const formData = { DOCUMENTS: [desc] };
     this.getFileToken(desc, version || 'C', true).then(tokenData => {
       if (!!tokenData && tokenData.url && tokenData.name) {
+        const noSSL = !location.href.toLowerCase().startsWith('https://');
         const dAnchor = document.createElement('a');
         dAnchor['download'] = 'download';
         dAnchor.target = '_blank';
         dAnchor.classList.add('download-iframe');
         dAnchor.style.display = 'none';
-        dAnchor.href = tokenData.url;
+        dAnchor.href = tokenData.url + (noSSL ? '?share' : '');
         document.body.appendChild(dAnchor);
         dAnchor.click();
       }
